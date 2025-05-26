@@ -1,4 +1,4 @@
-// src/components/ProductList.jsx
+// src/components/ProductsList.jsx
 import React, { useEffect, useState } from 'react';
 import {
   getProducts,
@@ -7,8 +7,10 @@ import {
   deleteProduct,
 } from '../services/productService';
 import ProductForm from './ProductForm';
+import imgedit from '../assets/edit.png';
+import imgdelete from '../assets/delete.png';
 
-const ProductList = () => {
+const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [editing, setEditing] = useState(null);
 
@@ -23,7 +25,7 @@ const ProductList = () => {
 
   const handleSave = async (product) => {
     if (editing) {
-      await updateProduct(editing.id, product);
+      await updateProduct(editing.idproduct, product);
       setEditing(null);
     } else {
       await createProduct(product);
@@ -35,36 +37,43 @@ const ProductList = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm('¿Seguro que deseas eliminarlo?')) {
-      await deleteProduct(id);
+      await deleteProduct(Number(id));
       fetchProducts();
     }
   };
 
   return (
-    <div>
+    <>
+      <hr />
+      <h2>Gestión de Productos</h2>
       <ProductForm onSubmit={handleSave} initialData={editing} />
-      <table className="table table-bordered">
-        <thead>
+      <hr />
+      <table className="table table-hover">
+        <thead thead-dark>
           <tr>
-            <th>ID</th><th>Nombre</th><th>Precio</th><th>Acciones</th>
+            <th>Código</th><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Categoría</th><th>Unidad</th><th>Estado</th><th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {products.map(p => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
+            <tr key={p.idproduct}>
+              <td>{p.code}</td>
               <td>{p.name}</td>
               <td>${p.price}</td>
+              <td>{p.stock}</td>
+              <td>{p.namecategory}</td>
+              <td>{p.namemeasurement}</td>
+              <td>{p.state ? 'Activo' : 'Inactivo'}</td>
               <td>
-                <button onClick={() => handleEdit(p)} className="btn btn-warning btn-sm me-2">Editar</button>
-                <button onClick={() => handleDelete(p.id)} className="btn btn-danger btn-sm">Eliminar</button>
+                <a onClick={() => handleEdit(p)}><img src={imgedit} title="Editar" alt="Editar" height="20"/></a>
+                <a onClick={() => handleDelete(p.idproduct)}><img src={imgdelete} title="Eliminar" alt="Eliminar" height="20"/></a>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 
-export default ProductList;
+export default ProductsList;
