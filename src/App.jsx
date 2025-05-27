@@ -2,14 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProductsList from "./components/ProductsList";
 import CategoryList from "./components/CategoryList";
+import CategoryForm from "./components/CategoryForm";
 import MeasurementList from "./components/MeasurementList";
 import Home from "./components/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import logo1 from './assets/react.svg';
-import logo2 from './assets/inventariapp.jpeg';
-import logo3 from './assets/inventariapp2.jpeg';
-import logo4 from './assets/inventariapp3.jpeg';
+import logo from './assets/inventariapp3.jpeg';
 
 function App() {
   return (
@@ -17,7 +15,7 @@ function App() {
       {/* NAVBAR FIJA EN TOP Y DE ANCHO COMPLETO */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark text-center fixed-top">
         <div className="container">
-          <Link className="navbar-brand" to="/"><img src={logo4} alt="Inventario App" height="40" class="redondeada" /></Link>
+          <Link className="navbar-brand" to="/"><img src={logo} alt="Inventario App" height="40" className="redondeada" /></Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -49,7 +47,6 @@ function App() {
                   <li><Link className="dropdown-item" to="/products">Productos</Link></li>
                   <li><Link className="dropdown-item" to="/sellers">Vendedores</Link></li>
                   <li><Link className="dropdown-item" to="/users">Usuarios</Link></li>
-
                 </ul>
               </li>
               <li className="nav-item"><Link className="nav-link" to="/persons">Personas</Link></li>
@@ -68,8 +65,17 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/categories" element={<CategoryList />} />
+              <Route path="/categories/new" element={<CategoryForm />} />
+              <Route path="/categories/edit/:id" element={<CategoryForm />} />              
+
               <Route path="/measurements" element={<MeasurementList />} />
+              <Route path="/measurements/new" element={<MeasurementForm />} />
+              <Route path="/measurements/edit/:id" element={<MeasurementForm />} />              
+
               <Route path="/products" element={<ProductsList />} />
+              <Route path="/products/new" element={<ProductForm />} />
+              <Route path="/products/edit/:id" element={<ProductForm />} />              
+
               <Route path="/sellers" element={<div>Componente Vendedores</div>} />
               <Route path="/users" element={<div>Componente Usuarios</div>} />
               <Route path="/persons" element={<div>Componente Personas</div>} />

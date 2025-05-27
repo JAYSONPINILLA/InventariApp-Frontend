@@ -6,13 +6,14 @@ import {
   updateCategory,
   deleteCategory,
 } from '../services/categoryService';
+import { useNavigate } from 'react-router-dom';
 import CategoryForm from './CategoryForm';
 import imgedit from '../assets/edit.png';
 import imgdelete from '../assets/delete.png';
 
 const CategoryList = () => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [editing, setEditing] = useState(null);
 
   const fetchCategories = async () => {
     const res = await getCategories();
@@ -23,17 +24,13 @@ const CategoryList = () => {
     fetchCategories();
   }, []);
 
-  const handleSave = async (category) => {
-    if (editing) {
-      await updateCategory(editing.idcategory, category);
-      setEditing(null);
-    } else {
-      await createCategory(category);
-    }
-    fetchCategories();
-  };
+  const handleAdd = () => {
+    navigate(`/categories/new`);
+  }
 
-  const handleEdit = (category) => setEditing(category);
+  const handleEdit = (category) => {
+    navigate(`/categories/edit/${category.idcategory}`);
+  } 
 
   const handleDelete = async (id) => {
     if (window.confirm('¿Seguro que deseas eliminarla?')) {
@@ -47,8 +44,7 @@ const CategoryList = () => {
       <hr />
       <h2>Parametrización de Categorías</h2>
       <hr />
-      <CategoryForm onSubmit={handleSave} initialData={editing} />
-      <hr />
+      <button className="btn btn-primary mb-2" onClick={handleAdd}>Agregar Categoría</button>
       <table className="table table-hover">
         <thead>
           <tr>
